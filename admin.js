@@ -1,329 +1,354 @@
-// js/admin.js - JavaScript cho trang quản lý Admin
+const data = {
+  products: [
+    {
+      id: 1,
+      name: "Áo thun đen",
+      category: "Áo Thun & T-shirt",
+      price: 320000,
+      stock: 45,
+      status: "Còn hàng",
+    },
+    {
+      id: 2,
+      name: "Áo sơ mi trắng",
+      category: "Áo Sơ Mi",
+      price: 450000,
+      stock: 28,
+      status: "Còn hàng",
+    },
+    {
+      id: 3,
+      name: "Áo khoác denim",
+      category: "Áo Khoác",
+      price: 790000,
+      stock: 5,
+      status: "Sắp hết",
+    },
+    {
+      id: 4,
+      name: "Quần jean xanh",
+      category: "Quần Jeans",
+      price: 680000,
+      stock: 0,
+      status: "Hết hàng",
+    },
+  ],
+  categories: [
+    { id: 1, name: "Áo Thun & T-shirt", productCount: 25 },
+    { id: 2, name: "Áo Sơ Mi", productCount: 18 },
+    { id: 3, name: "Áo Khoác", productCount: 12 },
+    { id: 4, name: "Quần Jeans", productCount: 15 },
+    { id: 5, name: "Quần Shorts", productCount: 10 },
+  ],
+  orders: [
+    {
+      id: "DH001",
+      customer: "Nguyễn Văn A",
+      total: 320000,
+      status: "Đã giao",
+      date: "20/10/2025",
+    },
+    {
+      id: "DH002",
+      customer: "Trần Thị B",
+      total: 680000,
+      status: "Đang xử lý",
+      date: "19/10/2025",
+    },
+    {
+      id: "DH003",
+      customer: "Lê Văn C",
+      total: 790000,
+      status: "Chờ xác nhận",
+      date: "18/10/2025",
+    },
+  ],
+  customers: [
+    {
+      id: 1,
+      name: "Nguyễn Văn A",
+      email: "nva@email.com",
+      phone: "0912345678",
+      orders: 5,
+    },
+    {
+      id: 2,
+      name: "Trần Thị B",
+      email: "ttb@email.com",
+      phone: "0923456789",
+      orders: 3,
+    },
+    {
+      id: 3,
+      name: "Lê Văn C",
+      email: "lvc@email.com",
+      phone: "0934567890",
+      orders: 8,
+    },
+  ],
+};
 
-document.addEventListener("DOMContentLoaded", () => {
-  // ========== MENU TOGGLE ==========
+// Load initial data
+function loadTableData() {
+  loadProducts();
+  loadCategories();
+  loadOrders();
+  loadCustomers();
+}
+
+function loadProducts() {
+  const tbody = document.getElementById("productsTableBody");
+  tbody.innerHTML = data.products
+    .map(
+      (p) => `
+        <tr>
+            <td>${p.id}</td>
+            <td>${p.name}</td>
+            <td>${p.category}</td>
+            <td>${p.price.toLocaleString()}đ</td>
+            <td>${p.stock}</td>
+            <td><span class="badge badge-${getStatusClass(p.status)}">${
+        p.status
+      }</span></td>
+            <td>
+                <button class="btn btn-small btn-warning" onclick="editItem('product', ${
+                  p.id
+                })">Sửa</button>
+                <button class="btn btn-small btn-danger" onclick="deleteItem('product', ${
+                  p.id
+                })">Xóa</button>
+            </td>
+        </tr>
+    `
+    )
+    .join("");
+}
+
+function loadCategories() {
+  const tbody = document.getElementById("categoriesTableBody");
+  tbody.innerHTML = data.categories
+    .map(
+      (c) => `
+        <tr>
+            <td>${c.id}</td>
+            <td>${c.name}</td>
+            <td>${c.productCount}</td>
+            <td>
+                <button class="btn btn-small btn-warning" onclick="editItem('category', ${c.id})">Sửa</button>
+                <button class="btn btn-small btn-danger" onclick="deleteItem('category', ${c.id})">Xóa</button>
+            </td>
+        </tr>
+    `
+    )
+    .join("");
+}
+
+function loadOrders() {
+  const tbody = document.getElementById("ordersTableBody");
+  tbody.innerHTML = data.orders
+    .map(
+      (o) => `
+        <tr>
+            <td>${o.id}</td>
+            <td>${o.customer}</td>
+            <td>${o.total.toLocaleString()}đ</td>
+            <td><span class="badge badge-${getOrderStatusClass(o.status)}">${
+        o.status
+      }</span></td>
+            <td>${o.date}</td>
+            <td>
+                <button class="btn btn-small btn-success" onclick="viewOrder('${
+                  o.id
+                }')">Chi tiết</button>
+            </td>
+        </tr>
+    `
+    )
+    .join("");
+}
+
+function loadCustomers() {
+  const tbody = document.getElementById("customersTableBody");
+  tbody.innerHTML = data.customers
+    .map(
+      (c) => `
+        <tr>
+            <td>${c.id}</td>
+            <td>${c.name}</td>
+            <td>${c.email}</td>
+            <td>${c.phone}</td>
+            <td>${c.orders}</td>
+            <td>
+                <button class="btn btn-small btn-warning" onclick="editItem('customer', ${c.id})">Sửa</button>
+                <button class="btn btn-small btn-danger" onclick="deleteItem('customer', ${c.id})">Xóa</button>
+            </td>
+        </tr>
+    `
+    )
+    .join("");
+}
+
+// Navigation
+function navigateToPage(page) {
+  document
+    .querySelectorAll(".page-content")
+    .forEach((p) => p.classList.add("hidden"));
+  document.getElementById(`${page}-page`).classList.remove("hidden");
+
+  document
+    .querySelectorAll(".nav-item")
+    .forEach((item) => item.classList.remove("active"));
+  document
+    .querySelector(`[data-page="${page}"]`)
+    .parentElement.classList.add("active");
+
+  if (window.innerWidth <= 991) {
+    document.getElementById("sidebar").classList.remove("active");
+  }
+}
+
+// Modal functions
+function openModal(modalId) {
+  document.getElementById(modalId).classList.add("active");
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove("active");
+}
+
+// Helper functions
+function getStatusClass(status) {
+  if (status === "Còn hàng") return "success";
+  if (status === "Sắp hết") return "warning";
+  return "danger";
+}
+
+function getOrderStatusClass(status) {
+  if (status === "Đã giao") return "success";
+  if (status === "Đang xử lý") return "warning";
+  return "danger";
+}
+
+function editItem(type, id) {
+  alert(
+    `Chỉnh sửa ${type} ID: ${id}\n\nChức năng này sẽ được tích hợp với ASP backend`
+  );
+}
+
+function deleteItem(type, id) {
+  if (confirm(`Bạn có chắc muốn xóa ${type} này?`)) {
+    alert(`Đã xóa ${type} ID: ${id}`);
+    loadTableData();
+  }
+}
+
+function viewOrder(id) {
+  alert(
+    `Xem chi tiết đơn hàng: ${id}\n\nChức năng này sẽ được tích hợp với ASP backend`
+  );
+}
+
+// Event listeners
+document.addEventListener("DOMContentLoaded", function () {
+  loadTableData();
+
+  // Navigation
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      const page = this.dataset.page;
+      navigateToPage(page);
+    });
+  });
+
+  // Menu toggle for mobile
   const menuToggle = document.getElementById("menuToggle");
-  const sidebar = document.getElementById("adminSidebar");
+  const sidebar = document.getElementById("sidebar");
 
-  if (menuToggle && sidebar) {
-    menuToggle.addEventListener("click", () => {
+  if (menuToggle) {
+    menuToggle.addEventListener("click", function () {
       sidebar.classList.toggle("active");
     });
-
-    // Đóng sidebar khi click bên ngoài trên mobile
-    document.addEventListener("click", (e) => {
-      if (window.innerWidth <= 991) {
-        if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-          sidebar.classList.remove("active");
-        }
-      }
-    });
   }
 
-  // ========== NAVIGATION ACTIVE STATE ==========
-  const navLinks = document.querySelectorAll(".nav-link");
-  const pageTitle = document.querySelector(".page-title");
-
-  navLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      // Loại bỏ active class từ tất cả các nav-item
-      document.querySelectorAll(".nav-item").forEach((item) => {
-        item.classList.remove("active");
-      });
-
-      // Thêm active class vào nav-item được click
-      link.parentElement.classList.add("active");
-
-      // Cập nhật page title
-      const navText = link.querySelector(".nav-text").textContent;
-      if (pageTitle && !link.getAttribute("href").includes(".html")) {
-        pageTitle.textContent = navText;
-      }
-
-      // Đóng sidebar trên mobile
-      if (window.innerWidth <= 991) {
-        sidebar.classList.remove("active");
+  // Close modal when clicking outside
+  document.querySelectorAll(".modal").forEach((modal) => {
+    modal.addEventListener("click", function (e) {
+      if (e.target === this) {
+        this.classList.remove("active");
       }
     });
   });
 
-  // ========== ACTION BUTTONS ==========
-  // Xem chi tiết
-  const viewButtons = document.querySelectorAll(".btn-view");
-  viewButtons.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const row = e.target.closest("tr");
-      const rowData = getRowData(row);
-      showAlert("Xem chi tiết", `Đang xem: ${rowData.name || rowData.id}`);
+  // Form submissions
+  document
+    .getElementById("productForm")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const product = {
+        id: data.products.length + 1,
+        name: formData.get("name"),
+        category: this.querySelector('[name="category"] option:checked').text,
+        price: parseInt(formData.get("price")),
+        stock: parseInt(formData.get("stock")),
+        status: parseInt(formData.get("stock")) > 10 ? "Còn hàng" : "Sắp hết",
+      };
+
+      data.products.push(product);
+      loadProducts();
+      closeModal("productModal");
+      this.reset();
+      alert("Đã thêm sản phẩm thành công!");
     });
-  });
 
-  // Chỉnh sửa
-  const editButtons = document.querySelectorAll(".btn-edit");
-  editButtons.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const row = e.target.closest("tr");
-      const rowData = getRowData(row);
-      showAlert("Chỉnh sửa", `Đang chỉnh sửa: ${rowData.name || rowData.id}`);
+  document
+    .getElementById("categoryForm")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const category = {
+        id: data.categories.length + 1,
+        name: formData.get("name"),
+        productCount: 0,
+      };
+
+      data.categories.push(category);
+      loadCategories();
+      closeModal("categoryModal");
+      this.reset();
+      alert("Đã thêm danh mục thành công!");
     });
-  });
 
-  // Xóa
-  const deleteButtons = document.querySelectorAll(".btn-delete");
-  deleteButtons.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const row = e.target.closest("tr");
-      const rowData = getRowData(row);
+  document
+    .getElementById("customerForm")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const customer = {
+        id: data.customers.length + 1,
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        orders: 0,
+      };
 
-      if (
-        confirm(`Bạn có chắc chắn muốn xóa "${rowData.name || rowData.id}"?`)
-      ) {
-        // Animation xóa
-        row.style.transition = "all 0.3s ease";
-        row.style.opacity = "0";
-        row.style.transform = "translateX(-20px)";
-
-        setTimeout(() => {
-          row.remove();
-          showAlert(
-            "Đã xóa",
-            `Đã xóa thành công: ${rowData.name || rowData.id}`,
-            "success"
-          );
-        }, 300);
-      }
+      data.customers.push(customer);
+      loadCustomers();
+      closeModal("customerModal");
+      this.reset();
+      alert("Đã thêm khách hàng thành công!");
     });
-  });
+});
 
-  // ========== ADD PRODUCT BUTTON ==========
-  const addProductBtn = document.querySelectorAll(".btn-primary");
-  addProductBtn.forEach((btn) => {
-    if (btn.textContent.includes("Thêm")) {
-      btn.addEventListener("click", () => {
-        showAlert(
-          "Thêm mới",
-          "Chức năng thêm mới đang được phát triển...",
-          "info"
-        );
-      });
+// Close sidebar when clicking outside on mobile
+document.addEventListener("click", function (e) {
+  if (window.innerWidth <= 991) {
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.getElementById("menuToggle");
+
+    if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+      sidebar.classList.remove("active");
     }
-    if (btn.textContent.includes("Xem tất cả")) {
-      btn.addEventListener("click", () => {
-        showAlert("Xem tất cả", "Đang chuyển đến trang danh sách...", "info");
-      });
-    }
-  });
-
-  // ========== HELPER FUNCTIONS ==========
-  function getRowData(row) {
-    const cells = row.querySelectorAll("td");
-    return {
-      id: cells[0]?.textContent.trim() || "",
-      name: cells[1]?.textContent.trim() || cells[2]?.textContent.trim() || "",
-    };
   }
-
-  function showAlert(title, message, type = "info") {
-    // Tạo alert element
-    const alertDiv = document.createElement("div");
-    alertDiv.className = `custom-alert alert-${type}`;
-    alertDiv.innerHTML = `
-            <div class="alert-content">
-                <strong>${title}</strong>
-                <p>${message}</p>
-            </div>
-            <button class="alert-close">×</button>
-        `;
-
-    // Thêm styles nếu chưa có
-    if (!document.getElementById("custom-alert-styles")) {
-      const style = document.createElement("style");
-      style.id = "custom-alert-styles";
-      style.textContent = `
-                .custom-alert {
-                    position: fixed;
-                    top: 90px;
-                    right: 20px;
-                    min-width: 300px;
-                    max-width: 400px;
-                    background: white;
-                    padding: 20px;
-                    border-radius: 8px;
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-                    z-index: 10000;
-                    animation: slideIn 0.3s ease;
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                    gap: 15px;
-                }
-                .custom-alert.alert-success {
-                    border-left: 4px solid #27ae60;
-                }
-                .custom-alert.alert-info {
-                    border-left: 4px solid #3498db;
-                }
-                .custom-alert.alert-warning {
-                    border-left: 4px solid #f39c12;
-                }
-                .custom-alert.alert-danger {
-                    border-left: 4px solid #e74c3c;
-                }
-                .alert-content strong {
-                    display: block;
-                    margin-bottom: 5px;
-                    color: #1a1a1a;
-                    font-size: 1rem;
-                }
-                .alert-content p {
-                    margin: 0;
-                    color: #666;
-                    font-size: 0.9rem;
-                }
-                .alert-close {
-                    background: none;
-                    border: none;
-                    font-size: 1.5rem;
-                    color: #999;
-                    cursor: pointer;
-                    padding: 0;
-                    width: 24px;
-                    height: 24px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    border-radius: 4px;
-                    transition: all 0.2s;
-                }
-                .alert-close:hover {
-                    background-color: #f5f5f5;
-                    color: #333;
-                }
-                @keyframes slideIn {
-                    from {
-                        transform: translateX(400px);
-                        opacity: 0;
-                    }
-                    to {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                }
-                @keyframes slideOut {
-                    from {
-                        transform: translateX(0);
-                        opacity: 1;
-                    }
-                    to {
-                        transform: translateX(400px);
-                        opacity: 0;
-                    }
-                }
-                @media (max-width: 767px) {
-                    .custom-alert {
-                        right: 10px;
-                        left: 10px;
-                        min-width: auto;
-                        max-width: none;
-                    }
-                }
-            `;
-      document.head.appendChild(style);
-    }
-
-    // Thêm vào body
-    document.body.appendChild(alertDiv);
-
-    // Close button
-    const closeBtn = alertDiv.querySelector(".alert-close");
-    closeBtn.addEventListener("click", () => {
-      alertDiv.style.animation = "slideOut 0.3s ease";
-      setTimeout(() => alertDiv.remove(), 300);
-    });
-
-    // Auto remove sau 4 giây
-    setTimeout(() => {
-      if (document.body.contains(alertDiv)) {
-        alertDiv.style.animation = "slideOut 0.3s ease";
-        setTimeout(() => alertDiv.remove(), 300);
-      }
-    }, 4000);
-  }
-
-  // ========== TABLE ROW HOVER EFFECT ==========
-  const tableRows = document.querySelectorAll(".data-table tbody tr");
-  tableRows.forEach((row) => {
-    row.addEventListener("mouseenter", function () {
-      this.style.transform = "scale(1.01)";
-      this.style.transition = "transform 0.2s ease";
-    });
-
-    row.addEventListener("mouseleave", function () {
-      this.style.transform = "scale(1)";
-    });
-  });
-
-  // ========== STAT CARDS ANIMATION ==========
-  const statCards = document.querySelectorAll(".stat-card");
-  statCards.forEach((card, index) => {
-    setTimeout(() => {
-      card.style.opacity = "0";
-      card.style.transform = "translateY(20px)";
-      card.style.transition = "all 0.5s ease";
-
-      setTimeout(() => {
-        card.style.opacity = "1";
-        card.style.transform = "translateY(0)";
-      }, 50);
-    }, index * 100);
-  });
-
-  // ========== SEARCH FUNCTIONALITY (Optional Enhancement) ==========
-  function addSearchFunctionality() {
-    const tables = document.querySelectorAll(".data-table");
-
-    tables.forEach((table) => {
-      const section = table.closest(".content-section");
-      const header = section.querySelector(".section-header");
-
-      // Tạo search input
-      const searchWrapper = document.createElement("div");
-      searchWrapper.style.cssText =
-        "flex: 1; max-width: 300px; margin: 0 20px;";
-      searchWrapper.innerHTML = `
-                <input type="text" 
-                       class="table-search" 
-                       placeholder="Tìm kiếm..." 
-                       style="width: 100%; padding: 10px 15px; border: 1px solid #ddd; border-radius: 6px; font-family: 'Montserrat', sans-serif;">
-            `;
-
-      header.insertBefore(searchWrapper, header.querySelector(".btn-primary"));
-
-      const searchInput = searchWrapper.querySelector(".table-search");
-
-      searchInput.addEventListener("input", (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        const rows = table.querySelectorAll("tbody tr");
-
-        rows.forEach((row) => {
-          const text = row.textContent.toLowerCase();
-          if (text.includes(searchTerm)) {
-            row.style.display = "";
-          } else {
-            row.style.display = "none";
-          }
-        });
-      });
-    });
-  }
-
-  // Uncomment để kích hoạt search
-  // addSearchFunctionality();
-
-  // ========== CONSOLE LOG ==========
-  console.log("🎉 Admin panel đã được khởi tạo thành công!");
-  console.log(
-    "📊 Tổng số đơn hàng:",
-    document.querySelectorAll(".data-table tbody tr").length
-  );
 });

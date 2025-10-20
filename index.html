@@ -12,356 +12,289 @@
     <link rel="stylesheet" href="./admin.css" />
   </head>
   <body>
-    <div class="admin-layout">
-      <!-- SIDEBAR -->
-      <aside class="admin-sidebar" id="adminSidebar">
-        <div class="admin-logo">
-          <h2>ABC Shop Admin</h2>
+    <body>
+        <button class="menu-toggle" id="menuToggle">☰ Menu</button>
+    
+        <div class="admin-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h2>ABC Shop Admin</h2>
+                </div>
+                <nav class="nav-menu">
+                    <ul>
+                        <li class="nav-item active">
+                            <a href="#" class="nav-link" data-page="dashboard">
+                                <span class="nav-icon">📊</span>
+                                <span>Tổng quan</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="products">
+                                <span class="nav-icon">📦</span>
+                                <span>Quản lý sản phẩm</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="categories">
+                                <span class="nav-icon">📑</span>
+                                <span>Danh mục</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="orders">
+                                <span class="nav-icon">🛒</span>
+                                <span>Đơn hàng</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-page="customers">
+                                <span class="nav-icon">👥</span>
+                                <span>Tài khoản khách hàng</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+    
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard Page -->
+                <div id="dashboard-page" class="page-content">
+                    <div class="page-header">
+                        <h1 class="page-title">Tổng quan</h1>
+                    </div>
+    
+                    <div class="section-list">
+                        <div class="section-card" onclick="navigateToPage('products')">
+                            <div class="section-icon">📦</div>
+                            <div class="section-title">Sản phẩm</div>
+                            <div class="section-desc">Quản lý kho sản phẩm</div>
+                        </div>
+                        <div class="section-card" onclick="navigateToPage('categories')">
+                            <div class="section-icon">📑</div>
+                            <div class="section-title">Danh mục</div>
+                            <div class="section-desc">Quản lý danh mục SP</div>
+                        </div>
+                        <div class="section-card" onclick="navigateToPage('orders')">
+                            <div class="section-icon">🛒</div>
+                            <div class="section-title">Đơn hàng</div>
+                            <div class="section-desc">Quản lý đơn hàng</div>
+                        </div>
+                        <div class="section-card" onclick="navigateToPage('customers')">
+                            <div class="section-icon">👥</div>
+                            <div class="section-title">Khách hàng</div>
+                            <div class="section-desc">Quản lý tài khoản</div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Products Page -->
+                <div id="products-page" class="page-content hidden">
+                    <div class="page-header">
+                        <h1 class="page-title">Quản lý sản phẩm</h1>
+                    </div>
+    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Danh sách sản phẩm</h3>
+                            <button class="btn btn-primary" onclick="openModal('productModal')">+ Thêm sản phẩm</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="productsTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Danh mục</th>
+                                        <th>Giá</th>
+                                        <th>Tồn kho</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTableBody">
+                                    <!-- Data sẽ được load bằng JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Categories Page -->
+                <div id="categories-page" class="page-content hidden">
+                    <div class="page-header">
+                        <h1 class="page-title">Quản lý danh mục</h1>
+                    </div>
+    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Danh sách danh mục</h3>
+                            <button class="btn btn-primary" onclick="openModal('categoryModal')">+ Thêm danh mục</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="categoriesTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tên danh mục</th>
+                                        <th>Số sản phẩm</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="categoriesTableBody">
+                                    <!-- Data sẽ được load bằng JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Orders Page -->
+                <div id="orders-page" class="page-content hidden">
+                    <div class="page-header">
+                        <h1 class="page-title">Quản lý đơn hàng</h1>
+                    </div>
+    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Danh sách đơn hàng</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="ordersTable">
+                                <thead>
+                                    <tr>
+                                        <th>Mã đơn</th>
+                                        <th>Khách hàng</th>
+                                        <th>Tổng tiền</th>
+                                        <th>Trạng thái</th>
+                                        <th>Ngày đặt</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody">
+                                    <!-- Data sẽ được load bằng JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Customers Page -->
+                <div id="customers-page" class="page-content hidden">
+                    <div class="page-header">
+                        <h1 class="page-title">Quản lý tài khoản khách hàng</h1>
+                    </div>
+    
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Danh sách khách hàng</h3>
+                            <button class="btn btn-primary" onclick="openModal('customerModal')">+ Thêm khách hàng</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="customersTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Họ tên</th>
+                                        <th>Email</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Tổng đơn</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customersTableBody">
+                                    <!-- Data sẽ được load bằng JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
-
-        <nav class="admin-nav">
-          <div class="nav-section">
-            <div class="nav-section-title">Tổng Quan</div>
-            <ul class="nav-list">
-              <li class="nav-item active">
-                <a href="#dashboard" class="nav-link">
-                  <span class="nav-icon">📊</span>
-                  <span class="nav-text">Dashboard</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="nav-section">
-            <div class="nav-section-title">Quản Lý</div>
-            <ul class="nav-list">
-              <li class="nav-item">
-                <a href="#products" class="nav-link">
-                  <span class="nav-icon">📦</span>
-                  <span class="nav-text">Sản phẩm</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#orders" class="nav-link">
-                  <span class="nav-icon">🛒</span>
-                  <span class="nav-text">Đơn hàng</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#customers" class="nav-link">
-                  <span class="nav-icon">👥</span>
-                  <span class="nav-text">Khách hàng</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#categories" class="nav-link">
-                  <span class="nav-icon">📑</span>
-                  <span class="nav-text">Danh mục</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <div class="nav-section">
-            <div class="nav-section-title">Cài Đặt</div>
-            <ul class="nav-list">
-              <li class="nav-item">
-                <a href="#settings" class="nav-link">
-                  <span class="nav-icon">⚙️</span>
-                  <span class="nav-text">Cài đặt</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="index.html" class="nav-link">
-                  <span class="nav-icon">🏠</span>
-                  <span class="nav-text">Về trang chủ</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <div class="admin-main">
-        <!-- HEADER -->
-        <header class="admin-header">
-          <div class="header-left">
-            <button class="menu-toggle" id="menuToggle">☰</button>
-            <h1 class="page-title">Dashboard</h1>
-          </div>
-          <div class="header-right">
-            <div class="admin-user">
-              <span class="user-name">Admin</span>
-              <div class="user-avatar">A</div>
-            </div>
-          </div>
-        </header>
-
-        <!-- CONTENT -->
-        <main class="admin-content">
-          <!-- STATS CARDS -->
-          <section class="stats-section">
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-icon blue">📦</div>
-                <div class="stat-info">
-                  <div class="stat-value">156</div>
-                  <div class="stat-label">Tổng sản phẩm</div>
+    
+        <!-- Modal Sản phẩm -->
+        <div id="productModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Thêm sản phẩm mới</h3>
+                    <button class="close-btn" onclick="closeModal('productModal')">&times;</button>
                 </div>
-              </div>
-
-              <div class="stat-card">
-                <div class="stat-icon green">🛒</div>
-                <div class="stat-info">
-                  <div class="stat-value">89</div>
-                  <div class="stat-label">Đơn hàng mới</div>
+                <form id="productForm">
+                    <div class="form-group">
+                        <label>Tên sản phẩm *</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Danh mục *</label>
+                        <select class="form-control" name="category" required>
+                            <option value="">Chọn danh mục</option>
+                            <option value="1">Áo Thun & T-shirt</option>
+                            <option value="2">Áo Sơ Mi</option>
+                            <option value="3">Áo Khoác</option>
+                            <option value="4">Quần Jeans</option>
+                            <option value="5">Quần Shorts</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Giá (VNĐ) *</label>
+                        <input type="number" class="form-control" name="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tồn kho *</label>
+                        <input type="number" class="form-control" name="stock" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+                </form>
+            </div>
+        </div>
+    
+        <!-- Modal Danh mục -->
+        <div id="categoryModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Thêm danh mục mới</h3>
+                    <button class="close-btn" onclick="closeModal('categoryModal')">&times;</button>
                 </div>
-              </div>
-
-              <div class="stat-card">
-                <div class="stat-icon orange">👥</div>
-                <div class="stat-info">
-                  <div class="stat-value">1,234</div>
-                  <div class="stat-label">Khách hàng</div>
+                <form id="categoryForm">
+                    <div class="form-group">
+                        <label>Tên danh mục *</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lưu danh mục</button>
+                </form>
+            </div>
+        </div>
+    
+        <!-- Modal Khách hàng -->
+        <div id="customerModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Thêm khách hàng mới</h3>
+                    <button class="close-btn" onclick="closeModal('customerModal')">&times;</button>
                 </div>
-              </div>
-
-              <div class="stat-card">
-                <div class="stat-icon purple">💰</div>
-                <div class="stat-info">
-                  <div class="stat-value">45.2M</div>
-                  <div class="stat-label">Doanh thu (VNĐ)</div>
-                </div>
-              </div>
+                <form id="customerForm">
+                    <div class="form-group">
+                        <label>Họ tên *</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại *</label>
+                        <input type="tel" class="form-control" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Địa chỉ</label>
+                        <input type="text" class="form-control" name="address">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lưu khách hàng</button>
+                </form>
             </div>
-          </section>
-
-          <!-- RECENT ORDERS -->
-          <section class="content-section">
-            <div class="section-header">
-              <h2 class="section-title">Đơn hàng gần đây</h2>
-              <button class="btn btn-primary">Xem tất cả</button>
-            </div>
-
-            <div class="table-container">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Mã đơn</th>
-                    <th>Khách hàng</th>
-                    <th>Sản phẩm</th>
-                    <th>Tổng tiền</th>
-                    <th>Trạng thái</th>
-                    <th>Ngày đặt</th>
-                    <th>Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>#DH001</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>Áo thun đen</td>
-                    <td>320.000đ</td>
-                    <td><span class="badge badge-success">Đã giao</span></td>
-                    <td>20/10/2025</td>
-                    <td>
-                      <button class="btn-action btn-view" title="Xem">
-                        👁️
-                      </button>
-                      <button class="btn-action btn-edit" title="Sửa">
-                        ✏️
-                      </button>
-                      <button class="btn-action btn-delete" title="Xóa">
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>#DH002</td>
-                    <td>Trần Thị B</td>
-                    <td>Quần jean xanh</td>
-                    <td>680.000đ</td>
-                    <td><span class="badge badge-warning">Đang xử lý</span></td>
-                    <td>19/10/2025</td>
-                    <td>
-                      <button class="btn-action btn-view" title="Xem">
-                        👁️
-                      </button>
-                      <button class="btn-action btn-edit" title="Sửa">
-                        ✏️
-                      </button>
-                      <button class="btn-action btn-delete" title="Xóa">
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>#DH003</td>
-                    <td>Lê Văn C</td>
-                    <td>Áo khoác</td>
-                    <td>790.000đ</td>
-                    <td><span class="badge badge-info">Chờ xác nhận</span></td>
-                    <td>18/10/2025</td>
-                    <td>
-                      <button class="btn-action btn-view" title="Xem">
-                        👁️
-                      </button>
-                      <button class="btn-action btn-edit" title="Sửa">
-                        ✏️
-                      </button>
-                      <button class="btn-action btn-delete" title="Xóa">
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>#DH004</td>
-                    <td>Phạm Thị D</td>
-                    <td>Áo sơ mi trắng</td>
-                    <td>450.000đ</td>
-                    <td><span class="badge badge-danger">Đã hủy</span></td>
-                    <td>17/10/2025</td>
-                    <td>
-                      <button class="btn-action btn-view" title="Xem">
-                        👁️
-                      </button>
-                      <button class="btn-action btn-edit" title="Sửa">
-                        ✏️
-                      </button>
-                      <button class="btn-action btn-delete" title="Xóa">
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>#DH005</td>
-                    <td>Hoàng Văn E</td>
-                    <td>Quần short</td>
-                    <td>290.000đ</td>
-                    <td><span class="badge badge-success">Đã giao</span></td>
-                    <td>16/10/2025</td>
-                    <td>
-                      <button class="btn-action btn-view" title="Xem">
-                        👁️
-                      </button>
-                      <button class="btn-action btn-edit" title="Sửa">
-                        ✏️
-                      </button>
-                      <button class="btn-action btn-delete" title="Xóa">
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          <!-- PRODUCTS SECTION -->
-          <section class="content-section">
-            <div class="section-header">
-              <h2 class="section-title">Quản lý sản phẩm</h2>
-              <button class="btn btn-primary">+ Thêm sản phẩm</button>
-            </div>
-
-            <div class="table-container">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Hình ảnh</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Danh mục</th>
-                    <th>Giá</th>
-                    <th>Tồn kho</th>
-                    <th>Trạng thái</th>
-                    <th>Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><div class="product-thumb">🎽</div></td>
-                    <td>Áo thun đen in hình</td>
-                    <td>Áo thun</td>
-                    <td>320.000đ</td>
-                    <td>45</td>
-                    <td><span class="badge badge-success">Còn hàng</span></td>
-                    <td>
-                      <button class="btn-action btn-view" title="Xem">
-                        👁️
-                      </button>
-                      <button class="btn-action btn-edit" title="Sửa">
-                        ✏️
-                      </button>
-                      <button class="btn-action btn-delete" title="Xóa">
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><div class="product-thumb">👔</div></td>
-                    <td>Áo sơ mi trắng</td>
-                    <td>Áo sơ mi</td>
-                    <td>450.000đ</td>
-                    <td>28</td>
-                    <td><span class="badge badge-success">Còn hàng</span></td>
-                    <td>
-                      <button class="btn-action btn-view" title="Xem">
-                        👁️
-                      </button>
-                      <button class="btn-action btn-edit" title="Sửa">
-                        ✏️
-                      </button>
-                      <button class="btn-action btn-delete" title="Xóa">
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><div class="product-thumb">🧥</div></td>
-                    <td>Áo khoác denim</td>
-                    <td>Áo khoác</td>
-                    <td>790.000đ</td>
-                    <td>5</td>
-                    <td><span class="badge badge-warning">Sắp hết</span></td>
-                    <td>
-                      <button class="btn-action btn-view" title="Xem">
-                        👁️
-                      </button>
-                      <button class="btn-action btn-edit" title="Sửa">
-                        ✏️
-                      </button>
-                      <button class="btn-action btn-delete" title="Xóa">
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><div class="product-thumb">👖</div></td>
-                    <td>Quần jean xanh</td>
-                    <td>Quần</td>
-                    <td>680.000đ</td>
-                    <td>0</td>
-                    <td><span class="badge badge-danger">Hết hàng</span></td>
-                    <td>
-                      <button class="btn-action btn-view" title="Xem">
-                        👁️
-                      </button>
-                      <button class="btn-action btn-edit" title="Sửa">
-                        ✏️
-                      </button>
-                      <button class="btn-action btn-delete" title="Xóa">
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-        </main>
-      </div>
-    </div>
+        </div>
+    
 
     <script src="./admin.js"></script>
   </body>
