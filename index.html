@@ -12,289 +12,402 @@
     <link rel="stylesheet" href="./admin.css" />
   </head>
   <body>
-    <body>
-        <button class="menu-toggle" id="menuToggle">☰ Menu</button>
-    
-        <div class="admin-layout">
-            <!-- Sidebar -->
-            <aside class="sidebar" id="sidebar">
-                <div class="sidebar-header">
-                    <h2>ABC Shop Admin</h2>
-                </div>
-                <nav class="nav-menu">
-                    <ul>
-                        <li class="nav-item active">
-                            <a href="#" class="nav-link" data-page="dashboard">
-                                <span class="nav-icon">📊</span>
-                                <span>Tổng quan</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-page="products">
-                                <span class="nav-icon">📦</span>
-                                <span>Quản lý sản phẩm</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-page="categories">
-                                <span class="nav-icon">📑</span>
-                                <span>Danh mục</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-page="orders">
-                                <span class="nav-icon">🛒</span>
-                                <span>Đơn hàng</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link" data-page="customers">
-                                <span class="nav-icon">👥</span>
-                                <span>Tài khoản khách hàng</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </aside>
-    
-            <!-- Main Content -->
-            <main class="main-content">
-                <!-- Dashboard Page -->
-                <div id="dashboard-page" class="page-content">
-                    <div class="page-header">
-                        <h1 class="page-title">Tổng quan</h1>
-                    </div>
-    
-                    <div class="section-list">
-                        <div class="section-card" onclick="navigateToPage('products')">
-                            <div class="section-icon">📦</div>
-                            <div class="section-title">Sản phẩm</div>
-                            <div class="section-desc">Quản lý kho sản phẩm</div>
-                        </div>
-                        <div class="section-card" onclick="navigateToPage('categories')">
-                            <div class="section-icon">📑</div>
-                            <div class="section-title">Danh mục</div>
-                            <div class="section-desc">Quản lý danh mục SP</div>
-                        </div>
-                        <div class="section-card" onclick="navigateToPage('orders')">
-                            <div class="section-icon">🛒</div>
-                            <div class="section-title">Đơn hàng</div>
-                            <div class="section-desc">Quản lý đơn hàng</div>
-                        </div>
-                        <div class="section-card" onclick="navigateToPage('customers')">
-                            <div class="section-icon">👥</div>
-                            <div class="section-title">Khách hàng</div>
-                            <div class="section-desc">Quản lý tài khoản</div>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Products Page -->
-                <div id="products-page" class="page-content hidden">
-                    <div class="page-header">
-                        <h1 class="page-title">Quản lý sản phẩm</h1>
-                    </div>
-    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Danh sách sản phẩm</h3>
-                            <button class="btn btn-primary" onclick="openModal('productModal')">+ Thêm sản phẩm</button>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="productsTable">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Danh mục</th>
-                                        <th>Giá</th>
-                                        <th>Tồn kho</th>
-                                        <th>Trạng thái</th>
-                                        <th>Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="productsTableBody">
-                                    <!-- Data sẽ được load bằng JS -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Categories Page -->
-                <div id="categories-page" class="page-content hidden">
-                    <div class="page-header">
-                        <h1 class="page-title">Quản lý danh mục</h1>
-                    </div>
-    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Danh sách danh mục</h3>
-                            <button class="btn btn-primary" onclick="openModal('categoryModal')">+ Thêm danh mục</button>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="categoriesTable">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tên danh mục</th>
-                                        <th>Số sản phẩm</th>
-                                        <th>Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="categoriesTableBody">
-                                    <!-- Data sẽ được load bằng JS -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Orders Page -->
-                <div id="orders-page" class="page-content hidden">
-                    <div class="page-header">
-                        <h1 class="page-title">Quản lý đơn hàng</h1>
-                    </div>
-    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Danh sách đơn hàng</h3>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="ordersTable">
-                                <thead>
-                                    <tr>
-                                        <th>Mã đơn</th>
-                                        <th>Khách hàng</th>
-                                        <th>Tổng tiền</th>
-                                        <th>Trạng thái</th>
-                                        <th>Ngày đặt</th>
-                                        <th>Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="ordersTableBody">
-                                    <!-- Data sẽ được load bằng JS -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-    
-                <!-- Customers Page -->
-                <div id="customers-page" class="page-content hidden">
-                    <div class="page-header">
-                        <h1 class="page-title">Quản lý tài khoản khách hàng</h1>
-                    </div>
-    
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Danh sách khách hàng</h3>
-                            <button class="btn btn-primary" onclick="openModal('customerModal')">+ Thêm khách hàng</button>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="customersTable">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Họ tên</th>
-                                        <th>Email</th>
-                                        <th>Số điện thoại</th>
-                                        <th>Tổng đơn</th>
-                                        <th>Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="customersTableBody">
-                                    <!-- Data sẽ được load bằng JS -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-    
-        <!-- Modal Sản phẩm -->
-        <div id="productModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Thêm sản phẩm mới</h3>
-                    <button class="close-btn" onclick="closeModal('productModal')">&times;</button>
-                </div>
-                <form id="productForm">
-                    <div class="form-group">
-                        <label>Tên sản phẩm *</label>
-                        <input type="text" class="form-control" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Danh mục *</label>
-                        <select class="form-control" name="category" required>
-                            <option value="">Chọn danh mục</option>
-                            <option value="1">Áo Thun & T-shirt</option>
-                            <option value="2">Áo Sơ Mi</option>
-                            <option value="3">Áo Khoác</option>
-                            <option value="4">Quần Jeans</option>
-                            <option value="5">Quần Shorts</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Giá (VNĐ) *</label>
-                        <input type="number" class="form-control" name="price" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Tồn kho *</label>
-                        <input type="number" class="form-control" name="stock" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
-                </form>
+    <button class="menu-toggle" id="menuToggle">☰ Menu</button>
+    <div class="admin-layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header"><h2>ABC Shop Admin</h2></div>
+        <nav class="nav-menu">
+          <ul>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-page="dashboard"
+                ><span class="nav-icon">📊</span><span>Tổng quan</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-page="products-tshirt"
+                ><span class="nav-icon">👕</span
+                ><span>Áo Thun & T-shirt</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-page="products-somi"
+                ><span class="nav-icon">👔</span><span>Áo Sơ Mi</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-page="products-khoac"
+                ><span class="nav-icon">🧥</span><span>Áo Khoác</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-page="products-jeans"
+                ><span class="nav-icon">👖</span><span>Quần Jeans</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-page="products-shorts"
+                ><span class="nav-icon">🩳</span><span>Quần Shorts</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-page="categories"
+                ><span class="nav-icon">📑</span><span>Danh mục</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-page="orders"
+                ><span class="nav-icon">🛒</span><span>Đơn hàng</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-page="payment"
+                ><span class="nav-icon">💳</span
+                ><span>Quản lý thanh toán</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-page="customers"
+                ><span class="nav-icon">👥</span
+                ><span>Tài khoản khách hàng</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" id="logout-btn"
+                ><span class="nav-icon">🚪</span><span>Đăng xuất</span></a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <div id="dashboard-page" class="page-content">
+          <div class="page-header"><h1 class="page-title">Tổng quan</h1></div>
+          <div class="section-list">
+            <div
+              class="section-card"
+              onclick="navigateToPage('products-tshirt')"
+            >
+              <div class="section-icon">👕</div>
+              <div class="section-title">Áo Thun</div>
+              <div class="section-desc">Quản lý áo thun</div>
             </div>
-        </div>
-    
-        <!-- Modal Danh mục -->
-        <div id="categoryModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Thêm danh mục mới</h3>
-                    <button class="close-btn" onclick="closeModal('categoryModal')">&times;</button>
-                </div>
-                <form id="categoryForm">
-                    <div class="form-group">
-                        <label>Tên danh mục *</label>
-                        <input type="text" class="form-control" name="name" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Lưu danh mục</button>
-                </form>
+            <div class="section-card" onclick="navigateToPage('products-somi')">
+              <div class="section-icon">👔</div>
+              <div class="section-title">Áo Sơ mi</div>
+              <div class="section-desc">Quản lý áo sơ mi</div>
             </div>
-        </div>
-    
-        <!-- Modal Khách hàng -->
-        <div id="customerModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Thêm khách hàng mới</h3>
-                    <button class="close-btn" onclick="closeModal('customerModal')">&times;</button>
-                </div>
-                <form id="customerForm">
-                    <div class="form-group">
-                        <label>Họ tên *</label>
-                        <input type="text" class="form-control" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email *</label>
-                        <input type="email" class="form-control" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Số điện thoại *</label>
-                        <input type="tel" class="form-control" name="phone" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Địa chỉ</label>
-                        <input type="text" class="form-control" name="address">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Lưu khách hàng</button>
-                </form>
+            <div class="section-card" onclick="navigateToPage('orders')">
+              <div class="section-icon">🛒</div>
+              <div class="section-title">Đơn hàng</div>
+              <div class="section-desc">Quản lý đơn hàng</div>
             </div>
+            <div class="section-card" onclick="navigateToPage('customers')">
+              <div class="section-icon">👥</div>
+              <div class="section-title">Khách hàng</div>
+              <div class="section-desc">Quản lý tài khoản</div>
+            </div>
+          </div>
         </div>
-    
+
+        <div id="products-tshirt-page" class="page-content hidden">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý Áo Thun & T-shirt</h1>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Danh sách sản phẩm</h3>
+              <button
+                class="btn btn-primary"
+                onclick="openModal('productModal')"
+              >
+                + Thêm sản phẩm
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Tồn kho</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="productsTshirtTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="products-somi-page" class="page-content hidden">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý Áo Sơ Mi</h1>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Danh sách sản phẩm</h3>
+              <button
+                class="btn btn-primary"
+                onclick="openModal('productModal')"
+              >
+                + Thêm sản phẩm
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Tồn kho</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="productsSomiTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="products-khoac-page" class="page-content hidden">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý Áo Khoác</h1>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Danh sách sản phẩm</h3>
+              <button
+                class="btn btn-primary"
+                onclick="openModal('productModal')"
+              >
+                + Thêm sản phẩm
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Tồn kho</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="productsKhoacTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="products-jeans-page" class="page-content hidden">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý Quần Jeans</h1>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Danh sách sản phẩm</h3>
+              <button
+                class="btn btn-primary"
+                onclick="openModal('productModal')"
+              >
+                + Thêm sản phẩm
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Tồn kho</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="productsJeansTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div id="products-shorts-page" class="page-content hidden">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý Quần Shorts</h1>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Danh sách sản phẩm</h3>
+              <button
+                class="btn btn-primary"
+                onclick="openModal('productModal')"
+              >
+                + Thêm sản phẩm
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Tồn kho</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="productsShortsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="categories-page" class="page-content hidden">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý Danh mục sản phẩm</h1>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Danh sách danh mục</h3>
+              <button
+                class="btn btn-primary"
+                onclick="openModal('categoryModal')"
+              >
+                + Thêm danh mục
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tên danh mục</th>
+                    <th>Số sản phẩm</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="categoriesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="orders-page" class="page-content hidden">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý Đơn hàng</h1>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Danh sách đơn hàng</h3>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Mã đơn</th>
+                    <th>Khách hàng</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Ngày đặt</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="customers-page" class="page-content hidden">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý Khách hàng</h1>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Danh sách khách hàng</h3>
+              <button
+                class="btn btn-primary"
+                onclick="openModal('customerModal')"
+              >
+                + Thêm khách hàng
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Tổng đơn</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="customersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="payment-page" class="page-content hidden">
+          <div class="page-header">
+            <h1 class="page-title">Quản lý thanh toán</h1>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Lịch sử giao dịch</h3>
+            </div>
+            <p style="padding: 20px">
+              Giao diện quản lý thanh toán sẽ được tích hợp với backend sau.
+            </p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="productModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Thêm sản phẩm mới</h3>
+          <button class="close-btn" onclick="closeModal('productModal')">
+            &times;
+          </button>
+        </div>
+        <form id="productForm">
+          <div class="form-group">
+            <label>Tên sản phẩm *</label
+            ><input type="text" class="form-control" name="name" required />
+          </div>
+          <div class="form-group">
+            <label>Danh mục *</label
+            ><select class="form-control" name="category" required>
+              <option value="">Chọn danh mục</option>
+              <option value="1">Áo Thun & T-shirt</option>
+              <option value="2">Áo Sơ Mi</option>
+              <option value="3">Áo Khoác</option>
+              <option value="4">Quần Jeans</option>
+              <option value="5">Quần Shorts</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Giá (VNĐ) *</label
+            ><input type="number" class="form-control" name="price" required />
+          </div>
+          <div class="form-group">
+            <label>Tồn kho *</label
+            ><input type="number" class="form-control" name="stock" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+        </form>
+      </div>
+    </div>
+    <div id="categoryModal" class="modal"></div>
+    <div id="customerModal" class="modal"></div>
 
     <script src="./admin.js"></script>
   </body>
